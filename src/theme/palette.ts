@@ -1,7 +1,7 @@
 import { alpha } from "@mui/material/styles";
 import type { PaletteMode } from "@mui/material";
 
-// ----------------------------------------------------------------------
+// ------------------------------------------------------------
 
 export type ColorSchema =
   | "primary"
@@ -11,70 +11,72 @@ export type ColorSchema =
   | "warning"
   | "error";
 
+// Modern Greyscale
 const GREY = {
   0: "#FFFFFF",
   100: "#F9FAFB",
   200: "#F4F6F8",
-  300: "#DFE3E8",
-  400: "#C4CDD5",
-  500: "#919EAB",
-  600: "#637381",
-  700: "#454F5B",
-  800: "#212B36",
-  900: "#161C24",
+  300: "#E0E3E7",
+  400: "#C2C7CF",
+  500: "#9FA6B2",
+  600: "#6B7280",
+  700: "#4B5563",
+  800: "#1F2937",
+  900: "#111827",
 };
 
+// Modern Branding Colors
 const PRIMARY = {
-  lighter: "#C8FAD6",
-  light: "#5BE49B",
-  main: "#00A76F",
-  dark: "#007867",
-  darker: "#004B50",
+  lighter: "#E3F2FD",
+  light: "#64B6F7",
+  main: "#1976D2",
+  dark: "#115293",
+  darker: "#0B3C6D",
   contrastText: "#FFFFFF",
 };
 
 const SECONDARY = {
-  lighter: "#EFD6FF",
-  light: "#C684FF",
-  main: "#8E33FF",
-  dark: "#5119B7",
-  darker: "#27097A",
+  lighter: "#F3E8FF",
+  light: "#B980F0",
+  main: "#7E3AF2",
+  dark: "#5C2D91",
+  darker: "#3B1C6F",
   contrastText: "#FFFFFF",
 };
 
 const INFO = {
-  lighter: "#CAFDF5",
-  light: "#61F3F3",
-  main: "#00B8D9",
-  dark: "#006C9C",
-  darker: "#003768",
+  lighter: "#E0F7FA",
+  light: "#4DD0E1",
+  main: "#00ACC1",
+  dark: "#007C91",
+  darker: "#004D61",
   contrastText: "#FFFFFF",
 };
 
 const SUCCESS = {
-  lighter: "#D3FCD2",
-  light: "#77ED8B",
-  main: "#22C55E",
-  dark: "#118D57",
-  darker: "#065E49",
-  contrastText: "#ffffff",
+  lighter: "#D1FAE5",
+  light: "#6EE7B7",
+  main: "#10B981",
+  dark: "#047857",
+  darker: "#065F46",
+  contrastText: "#FFFFFF",
 };
 
 const WARNING = {
-  lighter: "#FFF5CC",
-  light: "#FFD666",
-  main: "#FFAB00",
-  dark: "#B76E00",
-  darker: "#7A4100",
+  lighter: "#FFF7CD",
+  light: "#FFE066",
+  main: "#F59E0B",
+  dark: "#B45309",
+  darker: "#78350F",
   contrastText: GREY[800],
 };
 
 const ERROR = {
-  lighter: "#FFE9D5",
-  light: "#FFAC82",
-  main: "#FF5630",
-  dark: "#B71D18",
-  darker: "#7A0916",
+  lighter: "#FFE6E6",
+  light: "#FF8A80",
+  main: "#E53935",
+  dark: "#B71C1C",
+  darker: "#7F0000",
   contrastText: "#FFFFFF",
 };
 
@@ -90,11 +92,11 @@ const COMMON = {
   warning: WARNING,
   error: ERROR,
   grey: GREY,
-  divider: alpha(GREY[500], 0.2),
+  divider: alpha(GREY[500], 0.24),
   action: {
     hover: alpha(GREY[500], 0.08),
     selected: alpha(GREY[500], 0.16),
-    disabled: alpha(GREY[500], 0.8),
+    disabled: alpha(GREY[500], 0.4),
     disabledBackground: alpha(GREY[500], 0.24),
     focus: alpha(GREY[500], 0.24),
     hoverOpacity: 0.08,
@@ -102,23 +104,23 @@ const COMMON = {
   },
 };
 
-export function palette(mode: "light" | "dark") {
+export function palette(mode: PaletteMode) {
   const light = {
     ...COMMON,
     mode: "light" as PaletteMode,
     text: {
-      primary: GREY[800],
-      secondary: GREY[600],
+      primary: GREY[900],
+      secondary: GREY[700],
       disabled: GREY[500],
     },
     background: {
       paper: "#FFFFFF",
-      default: "#FFFFFF",
+      default: "#F9FAFB",
       neutral: GREY[200],
     },
     action: {
       ...COMMON.action,
-      active: GREY[600],
+      active: GREY[700],
     },
   };
 
@@ -127,7 +129,7 @@ export function palette(mode: "light" | "dark") {
     mode: "dark" as PaletteMode,
     text: {
       primary: "#FFFFFF",
-      secondary: GREY[500],
+      secondary: GREY[400],
       disabled: GREY[600],
     },
     background: {
@@ -137,7 +139,7 @@ export function palette(mode: "light" | "dark") {
     },
     action: {
       ...COMMON.action,
-      active: GREY[500],
+      active: GREY[400],
     },
   };
 
