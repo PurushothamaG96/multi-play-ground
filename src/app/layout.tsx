@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { SettingProvider } from "@/components/setting/setting-provider";
 import ThemProvider from "@/components/theme-provider";
-import { Box } from "@mui/material";
+import PrimarySearchAppBar from "@/components/app-bar";
+import { Container } from "@mui/material";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,7 +21,10 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <SettingProvider>
             <ThemProvider>
-              <Box>{children}</Box>
+              <Container maxWidth={false} disableGutters>
+                <PrimarySearchAppBar />
+                {children}
+              </Container>
             </ThemProvider>
           </SettingProvider>
         </AppRouterCacheProvider>

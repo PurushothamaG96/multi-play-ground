@@ -1,12 +1,27 @@
-'use client'
+"use client";
 import { ReactNode, useState } from "react";
 import { SettingContext } from "./setting-context";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 // 3. Create a provider component
 export const SettingProvider = ({ children }: { children: ReactNode }) => {
-  const [darkMode, setDarkMode] = useState(false);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const toggleDarkMode = () => setDarkMode((prev) => !prev);
+  const modeInQuery = searchParams.get("mode") === "dark";
+  const [darkMode, setDarkMode] = useState(modeInQuery);
+
+  // When toggled, update state AND query string
+  const toggleDarkMode = () => {
+    const newMode = darkMode ? "dark" : "light";
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("mode", newMode);
+
+    router.replace(`${pathname}?${params.toString()}`);
+    setDarkMode(!darkMode);
+  };
 
   return (
     <SettingContext.Provider value={{ darkMode, toggleDarkMode }}>
