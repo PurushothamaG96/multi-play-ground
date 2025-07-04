@@ -2,6 +2,8 @@
 import { ReactNode, useState } from "react";
 import { SettingContext } from "./setting-context";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { SnackbarProvider } from "notistack";
+import { SnackbarUtilsConfigurator } from "@/utits/snackbar";
 
 // 3. Create a provider component
 export const SettingProvider = ({ children }: { children: ReactNode }) => {
@@ -25,7 +27,16 @@ export const SettingProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <SettingContext.Provider value={{ darkMode, toggleDarkMode }}>
-      {children}
+      <SnackbarProvider
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        autoHideDuration={3000}
+      >
+         <SnackbarUtilsConfigurator />
+        {children}
+      </SnackbarProvider>
     </SettingContext.Provider>
   );
 };

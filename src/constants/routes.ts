@@ -1,8 +1,9 @@
 export const routes = {
-    protected: {
-        dashboard: "/"
-    },
-    login: {
-        login: "/login"
-    }
-}
+  protected: {
+    dashboard: "/dashboard",
+  },
+  auth: {
+    login: "/auth/login",
+    register: "/auth/register",
+  },
+};

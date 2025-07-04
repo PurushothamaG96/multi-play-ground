@@ -18,8 +18,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = async ({
   const cookiesStore = await cookies();
   const authToken = cookiesStore.get(COOKIE_AUTH_TOKEN);
 
+  console.log(authToken);
   if (!authToken) {
-    redirect(routes.login.login);
+    redirect(routes.auth.login);
   }
   return (
     <>

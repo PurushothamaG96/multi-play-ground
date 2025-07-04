@@ -14,8 +14,6 @@ export default function ThemProvider({
   const setting = useSetting();
   const themeMode = theme(setting?.darkMode ? "light" : "dark");
 
-  console.log(setting?.darkMode);
-  console.log(themeMode);
   return (
     <MuiThemeProvider theme={themeMode}>
       <CssBaseline />
