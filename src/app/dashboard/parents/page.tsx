@@ -13,6 +13,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { useGetStudents } from "@/hooks/useStudentParent";
 
 const teachers = [
   { id: 1, name: "Alice Johnson", subject: "Math", email: "alice@school.com" },
@@ -21,6 +22,10 @@ const teachers = [
 ];
 
 export default function TeacherManagementDashboard() {
+  const { data: parents, isLoading } = useGetStudents();
+
+  console.log(parents, isLoading);
+
   return (
     <Container maxWidth="md" sx={{ py: 6 }}>
       <Typography variant="h4" fontWeight="bold" gutterBottom>

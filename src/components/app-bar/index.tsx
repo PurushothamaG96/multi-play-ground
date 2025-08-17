@@ -19,6 +19,9 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useSetting } from "../setting/setting-context";
+import { Dashboard } from "@mui/icons-material";
+import Link from "next/link";
+import { routes } from "@/constants/routes";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -129,6 +132,14 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <MenuItem>
+        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+          <Badge badgeContent={4} color="error">
+            <MailIcon />
+          </Badge>
+        </IconButton>
+        <p>Dashbord</p>
+      </MenuItem>
       <MenuItem onClick={toggleDarkMode}>
         <IconButton
           size="large"
@@ -207,6 +218,13 @@ export default function PrimarySearchAppBar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <IconButton size="large" color="inherit">
+              <Badge badgeContent={4} color="error">
+                <Link href={routes.protected.dashboard}>
+                  <Dashboard />
+                </Link>
+              </Badge>
+            </IconButton>
             <IconButton onClick={toggleDarkMode}>
               {darkMode ? (
                 <DarkModeIcon sx={{ color: "primary.contrastText" }} />

@@ -2,12 +2,6 @@ import { Box } from "@mui/material";
 import React from "react";
 
 import VerticalNavBar from "@/components/side-bar/vertical-nav-bar";
-import { cookies } from "next/headers";
-import { COOKIE_AUTH_TOKEN } from "@/constants/cookies";
-import { routes } from "@/constants/routes";
-import { redirect } from "next/navigation";
-import PrimarySearchAppBar from "@/components/app-bar";
-
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
@@ -15,21 +9,17 @@ interface DashboardLayoutProps {
 const DashboardLayout: React.FC<DashboardLayoutProps> = async ({
   children,
 }) => {
-  const cookiesStore = await cookies();
-  const authToken = cookiesStore.get(COOKIE_AUTH_TOKEN);
-
-  console.log(authToken);
-  if (!authToken) {
-    redirect(routes.auth.login);
-  }
   return (
     <>
-      <PrimarySearchAppBar />
-      <Box display={"flex"}>
+      <Box
+        display={"flex"}
+        sx={{
+          border: 2,
+          borderColor: "white",
+        }}
+      >
         <VerticalNavBar />
-        <Box component="main" sx={{ margin: 2 }}>
-          {children}
-        </Box>
+        <Box component="main">{children}</Box>
       </Box>
     </>
   );

@@ -10,7 +10,7 @@ const register = async (requestPayload: Register) => {
     data: { data = {} },
   } = await authenticatedAxios({
     method: "POST",
-    url: `/api/v1/auth/register`,
+    url: `/auth/register`,
     data: requestPayload,
   });
 

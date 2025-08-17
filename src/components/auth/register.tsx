@@ -15,7 +15,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import useRegister from "@/hooks/useRegister";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { routes } from "@/constants/routes";
 import { useSnackbar } from "notistack";
 
@@ -34,6 +34,7 @@ const initialValues = {
 };
 
 export default function RegisterForm() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = React.useState(false);
   const { mutate, isSuccess, isError, error } = useRegister();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -41,18 +42,6 @@ export default function RegisterForm() {
   const handleTogglePassword = () => {
     setShowPassword((prev) => !prev);
   };
-
-  const handleSubmit = (values: typeof initialValues) => {
-    mutate(values);
-
-    if (isSuccess) {
-      enqueueSnackbar("Logging Success");
-      redirect(routes.auth.login);
-    } else if (isError) {
-      enqueueSnackbar(error?.message);
-    }
-  };
-
   return (
     <Paper elevation={3} sx={{ p: 4, maxWidth: 400, mx: "auto", mt: 8 }}>
       <Typography variant="h5" mb={2}>
@@ -67,7 +56,7 @@ export default function RegisterForm() {
           mutate(values, {
             onSuccess: () => {
               closeSnackbar();
-              redirect(routes.protected.dashboard);
+              router.push(routes.auth.login);
             },
             onError: () => {
               closeSnackbar();

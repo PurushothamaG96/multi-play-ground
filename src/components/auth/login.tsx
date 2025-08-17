@@ -102,7 +102,7 @@ export default function LoginForm() {
               variant="contained"
               color="primary"
               fullWidth
-              disabled={isSubmitting || !isValid || !dirty}
+              disabled={!isValid || !dirty}
               sx={{ mt: 2 }}
             >
               {isSubmitting ? "Logging in..." : "Login"}

@@ -1,12 +1,8 @@
 import { config } from "@/config/vars";
-import {
-  getAuthTokenCookie,
-  removeAuthTokenCookie,
-  setAuthTokenCookie,
-} from "@/constants/cookies";
+import { removeAuthTokenCookie, setAuthTokenCookie } from "@/constants/cookies";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged, signOut, User } from "firebase/auth";
-import { authenticatedAxios } from "./axios";
+import authenticatedAxios from "./axios";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 import { AxiosRequestConfig } from "axios";
 
@@ -34,6 +30,9 @@ export const logout = async () => {
 
 const fetchToken = (currentUser: User) => currentUser.getIdToken(true);
 
+export const getInstance = () => instance;
+export const getInstanceAuth = () => auth;
+
 export const refreshFirebaseToken = async () => {
   try {
     const user = await fetchFirebaseCurrentUser();
@@ -52,33 +51,5 @@ export const refreshFirebaseToken = async () => {
     return { token: null, error };
   }
 };
-
-authenticatedAxios.interceptors.request.use(
-  function (con) {
-    const token = getAuthTokenCookie();
-    if (token && con.headers) {
-      con.headers.Authorization = `Bearer ${token}`;
-    }
-    return con;
-  },
-  function (error) {
-    return Promise.reject(error);
-  }
-);
-
-const refreshAuthToken = async (failedRequest: { response: { config: AxiosRequestConfig } }) => {
-  const { token } = await refreshFirebaseToken();
-
-  if (token && failedRequest?.response?.config?.headers) {
-    failedRequest.response.config.headers.Authorization = `Bearer ${token}`;
-    return Promise.resolve();
-  }
-
-  return Promise.reject(failedRequest);
-};
-
-createAuthRefreshInterceptor(authenticatedAxios, refreshAuthToken, {
-  statusCodes: [403],
-});
 
 export { authenticatedAxios };
