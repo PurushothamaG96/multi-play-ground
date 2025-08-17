@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
-import { useUsersQuery } from "@/hooks/useUser";
+import { useDeleteUserMutation, useUsersQuery } from "@/hooks/useUser";
 import Scrollbar from "@/components/scrollbar";
 import CustomBreadcrumbs from "@/components/custom-breadcrumbs";
 import {
@@ -25,9 +25,9 @@ import {
   TableNoData,
   TablePaginationCustom,
 } from "@/components/table";
-import { USER_TYPE, USER_TYPE_NAME } from "@/constants/users";
-
-type User = { id: number; userName: string; email: string; userType: number };
+import { User, USER_TYPE, USER_TYPE_NAME } from "@/constants/users";
+import CreateUserDialog from "@/components/user/createUser";
+import ConfirmDialog from "@/components/delete/confirmDelete";
 
 const TABLE_HEAD = [
   { id: "userName", name: "Name" },
@@ -41,6 +41,11 @@ export default function UsersPage() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const [editUser, setEditUser] = React.useState<User | null>(null);
+  const [openEditDialog, setEditDialog] = React.useState(false);
+  // delete confirmation state
+  const [deleteId, setDeleteId] = useState<number | null>(null);
 
   const { data, isLoading, isError } = useUsersQuery({
     page,
@@ -48,29 +53,55 @@ export default function UsersPage() {
     search,
   });
 
+  const deleteUser = useDeleteUserMutation();
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setPage(0);
     setSearch(searchInput);
   };
 
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const deleteUserMutation = useDeleteUserMutation();
+
   const handleDelete = (id: number) => {
-    console.log("Delete user", id);
+    setSelectedUserId(id);
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedUserId) {
+      deleteUserMutation.mutate(selectedUserId);
+    }
+    setConfirmOpen(false);
+    setSelectedUserId(null);
   };
 
   const handleEdit = (user: User) => {
-    console.log("Edit user", user);
+    setEditUser(user);
+    setEditDialog(true);
   };
 
   return (
-    <Box>
-      <CustomBreadcrumbs
-        heading="Users"
-        links={[]}
-        sx={{
-          mb: { xs: 3, md: 5 },
-        }}
-      />
+    <Box padding={2}>
+      <Box
+        display={"flex"}
+        justifyContent={{ xs: "start", sm: "space-between" }}
+        alignItems={{ xs: "center" }}
+      >
+        <CustomBreadcrumbs
+          heading="Users"
+          links={[]}
+          sx={{
+            mb: { xs: 3, md: 5 },
+          }}
+        />
+
+        <Button onClick={() => setOpenDialog(true)} variant="contained">
+          + New User
+        </Button>
+      </Box>
 
       {/* Search */}
       <Box
@@ -144,6 +175,24 @@ export default function UsersPage() {
           }}
         />
       </Card>
+      <CreateUserDialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+      />
+      {editUser && (
+        <CreateUserDialog
+          open={openEditDialog}
+          onClose={() => setOpenDialog(false)}
+          userInfo={editUser}
+        />
+      )}
+      <ConfirmDialog
+        open={confirmOpen}
+        title="Delete User"
+        description="Are you sure you want to delete this user? This action cannot be undone."
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={handleConfirmDelete}
+      />
     </Box>
   );
 }

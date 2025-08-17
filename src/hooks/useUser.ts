@@ -1,11 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import authenticatedAxios from "./axios";
-
-type User = {
-  id: number;
-  userName: string;
-  email: string;
-};
+import { USER_TYPE } from "@/constants/users";
 
 type FetchUsersParams = {
   page: number;
@@ -35,7 +30,12 @@ export const useCreateUserMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (user: { userName: string; email: string }) => {
+    mutationFn: async (user: {
+      userName: string;
+      email: string;
+      userType: USER_TYPE;
+      password: string;
+    }) => {
       const res = await authenticatedAxios.post("/users", user);
       return res.data;
     },
@@ -50,9 +50,10 @@ export const useUpdateUserMutation = () => {
 
   return useMutation({
     mutationFn: async (user: {
-      id: number;
+      id: string;
       userName: string;
       email: string;
+      userType: USER_TYPE;
     }) => {
       const res = await authenticatedAxios.put(`/users/${user.id}`, user);
       return res.data;

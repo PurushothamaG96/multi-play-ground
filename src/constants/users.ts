@@ -21,3 +21,11 @@ export const USER_TYPE_NAME: Record<USER_TYPE, string> = {
   [USER_TYPE.STAFF]: "Staff",
   [USER_TYPE.NOT_DEFINED_YET]: "Not defined",
 };
+
+export type User = {
+  id: string;
+  userName: string;
+  email: string;
+  userType: number;
+  password: string;
+};
