@@ -62,17 +62,17 @@ export default function UsersPage() {
   };
 
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const deleteUserMutation = useDeleteUserMutation();
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     setSelectedUserId(id);
     setConfirmOpen(true);
   };
 
   const handleConfirmDelete = () => {
     if (selectedUserId) {
-      deleteUserMutation.mutate(selectedUserId);
+      deleteUserMutation.mutate(String(selectedUserId));
     }
     setConfirmOpen(false);
     setSelectedUserId(null);

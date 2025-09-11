@@ -68,7 +68,7 @@ export const useDeleteUserMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (id: number) => {
+    mutationFn: async (id: string) => {
       await authenticatedAxios.delete(`/users/${id}`);
       return id;
     },
