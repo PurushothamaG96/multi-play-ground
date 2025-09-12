@@ -16,7 +16,10 @@ import * as Yup from "yup";
 import { Close } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
 import { USER_TYPE, USER_TYPE_NAME } from "@/constants/users";
-import { useCreateTeacherMutation, useUpdateTeacherMutation } from "@/hooks/useTeachers";
+import {
+  useCreateTeacherMutation,
+  useUpdateTeacherMutation,
+} from "@/hooks/useTeachers";
 
 // Adjusted type for teacher info
 type CreateTeacherDialogProps = {
@@ -27,7 +30,7 @@ type CreateTeacherDialogProps = {
     name: string;
     email: string;
     phone: string;
-    address: string;
+    fullAddress: string;
     city: string;
     userType: USER_TYPE;
   };
@@ -48,7 +51,7 @@ const CreateTeacherDialog = ({
     name: Yup.string().required("Name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
     phone: Yup.string().required("Phone is required"),
-    address: Yup.string().required("Address is required"),
+    fullAddress: Yup.string().required("Address is required"),
     city: Yup.string().required("City is required"),
     userType: Yup.number().required("User type is required"),
   });
@@ -57,7 +60,7 @@ const CreateTeacherDialog = ({
     name: teacherInfo?.name || "",
     email: teacherInfo?.email || "",
     phone: teacherInfo?.phone || "",
-    address: teacherInfo?.address || "",
+    fullAddress: teacherInfo?.fullAddress || "",
     city: teacherInfo?.city || "",
     userType: teacherInfo?.userType ?? 9,
   };
@@ -76,7 +79,9 @@ const CreateTeacherDialog = ({
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
-          enqueueSnackbar(isEditMode ? "Updating teacher..." : "Creating teacher...");
+          enqueueSnackbar(
+            isEditMode ? "Updating teacher..." : "Creating teacher..."
+          );
           const payload = { ...values };
 
           if (isEditMode && teacherInfo) {
@@ -153,13 +158,13 @@ const CreateTeacherDialog = ({
               {/* Address */}
               <Field
                 as={TextField}
-                name="address"
+                name="fullAddress"
                 label="Address"
                 fullWidth
                 margin="normal"
                 required
-                helperText={<ErrorMessage name="address" />}
-                error={touched.address && Boolean(errors.address)}
+                helperText={<ErrorMessage name="fullAddress" />}
+                error={touched.fullAddress && Boolean(errors.fullAddress)}
               />
               {/* City */}
               <Field

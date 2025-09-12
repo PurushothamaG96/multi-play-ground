@@ -1,174 +1,168 @@
 "use client";
-import React, { useState } from "react";
 
-import { Edit, Delete } from "@mui/icons-material";
+import React, { useState } from "react";
 import {
   Box,
-  Typography,
-  Paper,
+  Button,
+  Card,
+  IconButton,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  IconButton,
 } from "@mui/material";
+import { Edit, Delete } from "@mui/icons-material";
+import Scrollbar from "@/components/scrollbar";
+import CustomBreadcrumbs from "@/components/custom-breadcrumbs";
+import {
+  TableHeadCustom,
+  TableNoData,
+  TablePaginationCustom,
+} from "@/components/table";
+import { USER_TYPE, USER_TYPE_NAME } from "@/constants/users";
+import { Students } from "@/constants/students";
 
-type Student = {
-  id: number;
-  name: string;
-  email: string;
-  grade: string;
-};
+import CreateStudentDialog from "@/components/student/createStudent";
+import ConfirmDialog from "@/components/delete/confirmDelete";
+import {
+  useDeleteStudentMutation,
+  useStudentsQuery,
+} from "@/hooks/useStudents";
 
-const initialStudents: Student[] = [
-  { id: 1, name: "Alice Johnson", email: "alice@example.com", grade: "A" },
-  { id: 2, name: "Bob Smith", email: "bob@example.com", grade: "B" },
+const TABLE_HEAD = [
+  { id: "name", name: "Name" },
+  { id: "email", name: "Email" },
+  { id: "phone", name: "Phone" },
+  { id: "city", name: "City" },
+  { id: "fullAddress", name: "Address" },
+  { id: "userType", name: "Type" },
+  { id: "actions", name: "Actions", align: "right" },
 ];
 
-export default function StudentDashboard() {
-  const [students, setStudents] = useState<Student[]>(initialStudents);
-  const [open, setOpen] = useState(false);
-  const [editIndex, setEditIndex] = useState<number | null>(null);
-  const [form, setForm] = useState({ name: "", email: "", grade: "" });
+export default function StudentsPage() {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [editStudent, setEditStudent] = useState<Students | null>(null);
+  const [search, setSearch] = useState("");
 
-  const handleOpen = (index: number | null = null) => {
-    setEditIndex(index);
-    if (index !== null) {
-      setForm(students[index]);
-    } else {
-      setForm({ name: "", email: "", grade: "" });
-    }
-    setOpen(true);
+  // delete confirmation state
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  const { data, isLoading, isError } = useStudentsQuery({
+    page,
+    pageSize: rowsPerPage,
+    search,
+  });
+  const deleteStudent = useDeleteStudentMutation();
+
+  const handleEdit = (student: Students) => {
+    setEditStudent(student);
+    setOpenDialog(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-    setEditIndex(null);
-    setForm({ name: "", email: "", grade: "" });
+  const handleDelete = (id: string) => {
+    setSelectedId(id);
+    setConfirmOpen(true);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = () => {
-    if (editIndex !== null) {
-      const updated = [...students];
-      updated[editIndex] = { ...updated[editIndex], ...form };
-      setStudents(updated);
-    } else {
-      setStudents([...students, { id: Date.now(), ...form }]);
-    }
-    handleClose();
-  };
-
-  const handleDelete = (index: number) => {
-    setStudents(students.filter((_, i) => i !== index));
+  const handleConfirmDelete = () => {
+    if (selectedId) deleteStudent.mutate(selectedId);
+    setConfirmOpen(false);
+    setSelectedId(null);
   };
 
   return (
-    <Box sx={{ p: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Student Management Dashboard
-      </Typography>
-      <Button variant="contained" color="primary" onClick={() => handleOpen()}>
-        Add Student
-      </Button>
-      <TableContainer component={Paper} sx={{ mt: 3 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Grade</TableCell>
-              <TableCell align="right">Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {students.map((student, idx) => (
-              <TableRow key={student.id}>
-                <TableCell>{student.name}</TableCell>
-                <TableCell>{student.email}</TableCell>
-                <TableCell>{student.grade}</TableCell>
-                <TableCell align="right">
-                  <IconButton
-                    color="primary"
-                    onClick={() => handleOpen(idx)}
-                    aria-label="edit"
-                  >
-                    <Edit />
-                  </IconButton>
-                  <IconButton
-                    color="error"
-                    onClick={() => handleDelete(idx)}
-                    aria-label="delete"
-                  >
-                    <Delete />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-            {students.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={4} align="center">
-                  No students found.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+    <Box padding={2}>
+      <Box
+        display="flex"
+        justifyContent={{ xs: "start", sm: "space-between" }}
+        alignItems="center"
+      >
+        <CustomBreadcrumbs
+          heading="Students"
+          links={[]}
+          sx={{ mb: { xs: 3, md: 5 } }}
+        />
+        <Button variant="contained" onClick={() => setOpenDialog(true)}>
+          + New Student
+        </Button>
+      </Box>
 
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>
-          {editIndex !== null ? "Edit Student" : "Add Student"}
-        </DialogTitle>
-        <DialogContent>
-          <TextField
-            margin="dense"
-            label="Name"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            fullWidth
-          />
-          <TextField
-            margin="dense"
-            label="Email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            fullWidth
-          />
-          <TextField
-            margin="dense"
-            label="Grade"
-            name="grade"
-            value={form.grade}
-            onChange={handleChange}
-            fullWidth
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button
-            onClick={handleSubmit}
-            variant="contained"
-            color="primary"
-            disabled={!form.name || !form.email || !form.grade}
-          >
-            {editIndex !== null ? "Update" : "Add"}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <Card>
+        <TableContainer sx={{ position: "relative", overflow: "auto" }}>
+          <Scrollbar>
+            <Table sx={{ minWidth: 800 }}>
+              <TableHeadCustom headLabel={TABLE_HEAD} />
+              <TableBody>
+                {isLoading ? (
+                  <TableRow>
+                    <TableCell colSpan={7} align="center">
+                      Loading...
+                    </TableCell>
+                  </TableRow>
+                ) : isError ? (
+                  <TableRow>
+                    <TableCell colSpan={7} align="center" sx={{ color: "red" }}>
+                      Failed to load students
+                    </TableCell>
+                  </TableRow>
+                ) : data?.students.length === 0 ? (
+                  <TableNoData notFound />
+                ) : (
+                  data?.students.map((student: Students) => (
+                    <TableRow key={student.id} hover>
+                      <TableCell>{student.name}</TableCell>
+                      <TableCell>{student.email}</TableCell>
+                      <TableCell>{student.phone}</TableCell>
+                      <TableCell>{student.city}</TableCell>
+                      <TableCell>{student.fullAddress}</TableCell>
+                      <TableCell>
+                        {USER_TYPE_NAME[student.userType as USER_TYPE]}
+                      </TableCell>
+                      <TableCell align="right">
+                        <IconButton onClick={() => handleEdit(student)}>
+                          <Edit />
+                        </IconButton>
+                        <IconButton onClick={() => handleDelete(student.id)}>
+                          <Delete />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </Scrollbar>
+        </TableContainer>
+
+        <TablePaginationCustom
+          count={data?.total || 0}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          onPageChange={(_, newPage) => setPage(newPage)}
+          onRowsPerPageChange={(e) => {
+            setRowsPerPage(parseInt(e.target.value, 10));
+            setPage(0);
+          }}
+        />
+      </Card>
+
+      <CreateStudentDialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        studentInfo={editStudent || undefined}
+      />
+
+      <ConfirmDialog
+        open={confirmOpen}
+        title="Delete Student"
+        description="Are you sure you want to delete this student? This action cannot be undone."
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={handleConfirmDelete}
+      />
     </Box>
   );
 }

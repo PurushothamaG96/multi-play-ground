@@ -3,7 +3,7 @@ export type Teachers = {
   name: string;
   email: string;
   phone: string;
-  address: string;
+  fullAddress: string;
   city: string;
   userType: number;
 };

@@ -32,7 +32,7 @@ const TABLE_HEAD = [
   { id: "email", name: "Email" },
   { id: "phone", name: "Phone" },
   { id: "city", name: "City" },
-  { id: "address", name: "Address" },
+  { id: "fullAddress", name: "Address" },
   { id: "userType", name: "Type" },
   { id: "actions", name: "Actions", align: "right" },
 ];
@@ -115,7 +115,7 @@ export default function TeachersPage() {
                       <TableCell>{teacher.email}</TableCell>
                       <TableCell>{teacher.phone}</TableCell>
                       <TableCell>{teacher.city}</TableCell>
-                      <TableCell>{teacher.address}</TableCell>
+                      <TableCell>{teacher.fullAddress}</TableCell>
                       <TableCell>
                         {USER_TYPE_NAME[teacher.userType as USER_TYPE]}
                       </TableCell>

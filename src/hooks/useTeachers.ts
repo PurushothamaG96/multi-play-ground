@@ -34,7 +34,7 @@ export const useCreateTeacherMutation = () => {
       name: string;
       email: string;
       phone: string;
-      address: string;
+      fullAddress: string;
       city: string;
       userType: USER_TYPE;
     }) => {
@@ -56,7 +56,7 @@ export const useUpdateTeacherMutation = () => {
       name: string;
       email: string;
       phone: string;
-      address: string;
+      fullAddress: string;
       city: string;
       userType: USER_TYPE;
     }) => {
