@@ -21,7 +21,7 @@ import {
   TablePaginationCustom,
 } from "@/components/table";
 import { USER_TYPE, USER_TYPE_NAME } from "@/constants/users";
-import { Teachers } from "@/constants/teachers";
+import { Teachers } from "@/interfaces/teachers";
 
 import CreateTeacherDialog from "@/components/teacher/createTeacher";
 import ConfirmDialog from "@/components/delete/confirmDelete";

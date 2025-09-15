@@ -21,21 +21,22 @@ import {
   TablePaginationCustom,
 } from "@/components/table";
 import { USER_TYPE, USER_TYPE_NAME } from "@/constants/users";
-import { Students } from "@/constants/students";
 
-import CreateStudentDialog from "@/components/student/createStudent";
+import CreateStudentDialog from "@/components/students/create-update-dialog";
 import ConfirmDialog from "@/components/delete/confirmDelete";
 import {
   useDeleteStudentMutation,
   useStudentsQuery,
-} from "@/hooks/useStudents";
+} from "@/hooks/useStudentParent";
+import { UpdateStudentDto } from "@/interfaces/student";
+import { GENDER } from "@/constants/system";
 
 const TABLE_HEAD = [
   { id: "name", name: "Name" },
-  { id: "email", name: "Email" },
-  { id: "phone", name: "Phone" },
-  { id: "city", name: "City" },
-  { id: "fullAddress", name: "Address" },
+  // { id: "email", name: "Email" },
+  // { id: "phone", name: "Phone" },
+  // { id: "city", name: "City" },
+  // { id: "fullAddress", name: "Address" },
   { id: "userType", name: "Type" },
   { id: "actions", name: "Actions", align: "right" },
 ];
@@ -44,7 +45,7 @@ export default function StudentsPage() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openDialog, setOpenDialog] = useState(false);
-  const [editStudent, setEditStudent] = useState<Students | null>(null);
+  const [editStudent, setEditStudent] = useState<UpdateStudentDto | null>(null);
   const [search, setSearch] = useState("");
 
   // delete confirmation state
@@ -58,7 +59,7 @@ export default function StudentsPage() {
   });
   const deleteStudent = useDeleteStudentMutation();
 
-  const handleEdit = (student: Students) => {
+  const handleEdit = (student: UpdateStudentDto) => {
     setEditStudent(student);
     setOpenDialog(true);
   };
@@ -112,16 +113,16 @@ export default function StudentsPage() {
                 ) : data?.students.length === 0 ? (
                   <TableNoData notFound />
                 ) : (
-                  data?.students.map((student: Students) => (
+                  data?.students.map((student: UpdateStudentDto) => (
                     <TableRow key={student.id} hover>
-                      <TableCell>{student.name}</TableCell>
-                      <TableCell>{student.email}</TableCell>
-                      <TableCell>{student.phone}</TableCell>
-                      <TableCell>{student.city}</TableCell>
-                      <TableCell>{student.fullAddress}</TableCell>
                       <TableCell>
-                        {USER_TYPE_NAME[student.userType as USER_TYPE]}
+                        {`${student.firstName}  ${student.middleName} ${student.lastName}`}
                       </TableCell>
+                      <TableCell>{GENDER[student.gender]}</TableCell>
+
+                      {/* <TableCell>
+                        {USER_TYPE_NAME[student. as USER_TYPE]}
+                      </TableCell> */}
                       <TableCell align="right">
                         <IconButton onClick={() => handleEdit(student)}>
                           <Edit />
