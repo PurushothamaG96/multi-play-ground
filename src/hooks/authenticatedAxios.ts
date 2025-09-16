@@ -1,10 +1,15 @@
 import { config } from "@/config/vars";
-import { removeAuthTokenCookie, setAuthTokenCookie } from "@/constants/cookies";
+import {
+  COOKIE_AUTH_TOKEN,
+  removeAuthTokenCookie,
+  setAuthTokenCookie,
+} from "@/constants/cookies";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged, signOut, User } from "firebase/auth";
 import authenticatedAxios from "./axios";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 import { AxiosRequestConfig } from "axios";
+import { deleteCookie } from "cookies-next/client";
 
 const instance = initializeApp(config.firebaseConfig);
 const auth = getAuth(instance);
@@ -26,6 +31,9 @@ export const logout = async () => {
   } catch (error) {
     throw error || new Error("Error logging out");
   }
+
+  // Clear cookie
+  deleteCookie(COOKIE_AUTH_TOKEN, { path: "/" });
 };
 
 const fetchToken = (currentUser: User) => currentUser.getIdToken(true);

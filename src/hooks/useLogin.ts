@@ -34,12 +34,15 @@ const logIn = async (payload: Login) => {
   const user = await firebaseCustomLogIn(data?.token || "", false);
   const token = user?.token || "";
 
-  if (token) {
+  console.log(data);
+
+
+  if (!token) {
     setCookie(COOKIE_AUTH_TOKEN, token, {
       expires: addDays(new Date(), 30),
       path: "/",
       sameSite: "lax",
-      secure: true, // optional but recommended in production
+      secure: true,
     });
   }
   return { client: data?.client };

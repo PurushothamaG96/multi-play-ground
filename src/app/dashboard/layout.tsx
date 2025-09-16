@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import React from "react";
 
 import VerticalNavBar from "@/components/side-bar/vertical-nav-bar";
+import { AuthProvider } from "@/contexts/auth-context";
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
@@ -11,16 +12,18 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = async ({
 }) => {
   return (
     <>
-      <Box
-        display={"flex"}
-        sx={{
-          border: 2,
-          borderColor: "white",
-        }}
-      >
-        <VerticalNavBar />
-        <Box component="main">{children}</Box>
-      </Box>
+      <AuthProvider>
+        <Box
+          display={"flex"}
+          sx={{
+            border: 2,
+            borderColor: "white",
+          }}
+        >
+          <VerticalNavBar />
+          <Box component="main">{children}</Box>
+        </Box>
+      </AuthProvider>
     </>
   );
 };

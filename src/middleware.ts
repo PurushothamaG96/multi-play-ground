@@ -1,32 +1,26 @@
+// middleware.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { routes } from "./constants/routes";
+import { COOKIE_AUTH_TOKEN } from "./constants/cookies";
 import { getCookie } from "cookies-next/server";
-import { COOKIE_AUTH_TOKEN, getAuthTokenCookie } from "./constants/cookies";
+import { routes } from "./constants/routes";
 
 export async function middleware(request: NextRequest) {
-  const res = NextResponse.next();
-  // const res = NextResponse.next();
-  const isAuthenticated = await getCookie(COOKIE_AUTH_TOKEN, {
-    res,
+  const token = await getCookie(COOKIE_AUTH_TOKEN, {
     req: request,
+    res: NextResponse.next(),
   });
 
-  // List of protected routes
-  const protectedRoutes = ["/dashboard", "/profile", "/settings"];
+  const protectedRoutes = ["/dashboard"];
 
-  if (
-    protectedRoutes.some((route) =>
-      request.nextUrl.pathname.startsWith(route)
-    ) &&
-    !isAuthenticated
-  ) {
-    const loginUrl = new URL(routes.auth.login, request.url);
-    return NextResponse.redirect(loginUrl);
+  if (protectedRoutes.some((route) => request.nextUrl.pathname.startsWith(route)) && !token) {
+    return NextResponse.redirect(new URL(routes.auth.login, request.url));
   }
+
+  return NextResponse.next();
 }
 
-// Optionally, specify which paths to run the middleware on
+// run only on /dashboard
 export const config = {
-  matcher: ["/dashboard/:path*", "/profile/:path*", "/settings/:path*"],
+  matcher: ["/dashboard/:path*"],
 };

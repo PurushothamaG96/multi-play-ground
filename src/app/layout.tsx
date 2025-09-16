@@ -22,13 +22,7 @@ export default function RootLayout({
           <TanstackProvider>
             <SettingProvider>
               <ThemProvider>
-                <Container
-                  disableGutters
-                  maxWidth={false}
-                  sx={{
-                    minHeight: "100vh",
-                  }}
-                >
+                <Container disableGutters maxWidth={false}>
                   {children}
                 </Container>
               </ThemProvider>
