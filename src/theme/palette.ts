@@ -1,90 +1,77 @@
 import { alpha } from "@mui/material/styles";
 import type { PaletteMode } from "@mui/material";
 
-// ------------------------------------------------------------
-
-export type ColorSchema =
-  | "primary"
-  | "secondary"
-  | "info"
-  | "success"
-  | "warning"
-  | "error";
-
-// Modern Greyscale
 const GREY = {
   0: "#FFFFFF",
-  100: "#F9FAFB",
-  200: "#F4F6F8",
-  300: "#E0E3E7",
-  400: "#C2C7CF",
-  500: "#9FA6B2",
-  600: "#6B7280",
-  700: "#4B5563",
-  800: "#1F2937",
-  900: "#111827",
+  100: "#FAFAF9",
+  200: "#F4F4F5",
+  300: "#E4E4E7",
+  400: "#D4D4D8",
+  500: "#A1A1AA",
+  600: "#71717A",
+  700: "#52525B",
+  800: "#27272A",
+  900: "#18181B",
 };
 
-// Modern Branding Colors
+// 🌼 Yellow as Primary
 const PRIMARY = {
-  lighter: "#E3F2FD",
-  light: "#64B6F7",
-  main: "#1976D2",
-  dark: "#115293",
-  darker: "#0B3C6D",
-  contrastText: "#FFFFFF",
+  lighter: "#FFFDE7",
+  light: "#FFF176",
+  main: "#FACC15", // Vibrant Yellow
+  dark: "#CA8A04", // Mustard-ish
+  darker: "#A16207",
+  contrastText: GREY,
 };
 
+// Secondary (Deep Grey/Charcoal to balance yellow)
 const SECONDARY = {
-  lighter: "#F3E8FF",
-  light: "#B980F0",
-  main: "#7E3AF2",
-  dark: "#5C2D91",
-  darker: "#3B1C6F",
+  lighter: "#F3F4F6",
+  light: "#9CA3AF",
+  main: "#374151", // Charcoal
+  dark: "#1F2937",
+  darker: "#111827",
   contrastText: "#FFFFFF",
 };
 
 const INFO = {
-  lighter: "#E0F7FA",
-  light: "#4DD0E1",
-  main: "#00ACC1",
-  dark: "#007C91",
-  darker: "#004D61",
+  lighter: "#E0F2FE",
+  light: "#60A5FA",
+  main: "#3B82F6",
+  dark: "#1D4ED8",
+  darker: "#1E3A8A",
   contrastText: "#FFFFFF",
 };
 
 const SUCCESS = {
-  lighter: "#D1FAE5",
-  light: "#6EE7B7",
+  lighter: "#ECFDF5",
+  light: "#34D399",
   main: "#10B981",
   dark: "#047857",
-  darker: "#065F46",
+  darker: "#064E3B",
   contrastText: "#FFFFFF",
 };
 
 const WARNING = {
-  lighter: "#FFF7CD",
-  light: "#FFE066",
-  main: "#F59E0B",
-  dark: "#B45309",
-  darker: "#78350F",
-  contrastText: GREY[800],
+  lighter: "#FEF9C3",
+  light: "#FDE047",
+  main: "#FACC15", // matches primary
+  dark: "#CA8A04",
+  darker: "#A16207",
+  contrastText: GREY[900],
 };
 
 const ERROR = {
-  lighter: "#FFE6E6",
-  light: "#FF8A80",
-  main: "#E53935",
-  dark: "#B71C1C",
-  darker: "#7F0000",
+  lighter: "#FEF2F2",
+  light: "#FCA5A5",
+  main: "#DC2626",
+  dark: "#B91C1C",
+  darker: "#7F1D1D",
   contrastText: "#FFFFFF",
 };
 
 const COMMON = {
-  common: {
-    black: "#000000",
-    white: "#FFFFFF",
-  },
+  common: { black: "#000", white: "#FFF" },
   primary: PRIMARY,
   secondary: SECONDARY,
   info: INFO,
@@ -92,7 +79,7 @@ const COMMON = {
   warning: WARNING,
   error: ERROR,
   grey: GREY,
-  divider: alpha(GREY[500], 0.24),
+  divider: alpha(GREY[500], 0.2),
   action: {
     hover: alpha(GREY[500], 0.08),
     selected: alpha(GREY[500], 0.16),
@@ -115,32 +102,26 @@ export function palette(mode: PaletteMode) {
     },
     background: {
       paper: "#FFFFFF",
-      default: "#F9FAFB",
+      default: "#FFFBEB", // soft pale yellow background
       neutral: GREY[200],
     },
-    action: {
-      ...COMMON.action,
-      active: GREY[700],
-    },
+    action: { ...COMMON.action, active: GREY[700] },
   };
 
   const dark = {
     ...COMMON,
     mode: "dark" as PaletteMode,
     text: {
-      primary: "#FFFFFF",
+      primary: "#FAFAF9",
       secondary: GREY[400],
       disabled: GREY[600],
     },
     background: {
-      paper: GREY[800],
-      default: GREY[900],
+      paper: "#1C1917",
+      default: "#0F0F0F",
       neutral: alpha(GREY[500], 0.12),
     },
-    action: {
-      ...COMMON.action,
-      active: GREY[400],
-    },
+    action: { ...COMMON.action, active: GREY[400] },
   };
 
   return mode === "light" ? light : dark;

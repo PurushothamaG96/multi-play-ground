@@ -125,9 +125,9 @@ export default function PrimarySearchAppBar() {
       <AppBar position="static">
         <Toolbar>
           {/* Left side menu */}
-          <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }}>
+          {/* <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }}>
             <MenuIcon />
-          </IconButton>
+          </IconButton> */}
 
           {/* App title */}
           <Typography
@@ -139,12 +139,12 @@ export default function PrimarySearchAppBar() {
           </Typography>
 
           {/* Search */}
-          <Search>
+          {/* <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase placeholder="Search…" />
-          </Search>
+          </Search> */}
 
           <Box sx={{ flexGrow: 1 }} />
 

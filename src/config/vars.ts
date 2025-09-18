@@ -9,3 +9,8 @@ export const config = {
     measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID!,
   },
 };
+
+export const secrets = {
+  datocmsToken: process.env.NEXT_DATOCMS_API_TOKEN,
+  datocmsEnv: process.env.NEXT_DATOCMS_ENVIRONMENT,
+};
