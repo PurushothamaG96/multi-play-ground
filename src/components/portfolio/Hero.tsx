@@ -1,7 +1,7 @@
 import { Box, Container, Typography, Button } from "@mui/material";
 import Image from "next/image";
 
-export default function Hero({ title, subtitle, image }: any) {
+export default function Hero({ title, subtitle, image, heroSub }: any) {
   return (
     <Box
       sx={{
@@ -21,6 +21,13 @@ export default function Hero({ title, subtitle, image }: any) {
       >
         {/* Text */}
         <Box flex={1}>
+          <Typography
+            variant="h6"
+            mb={3}
+            sx={{ fontSize: { xs: "1rem", md: "1.25rem" } }}
+          >
+            {heroSub}
+          </Typography>
           <Typography
             variant="h3"
             fontWeight={700}

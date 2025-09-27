@@ -21,7 +21,7 @@ const PRIMARY = {
   main: "#FACC15", // Vibrant Yellow
   dark: "#CA8A04", // Mustard-ish
   darker: "#A16207",
-  contrastText: GREY,
+  contrastText: GREY[900],
 };
 
 // Secondary (Deep Grey/Charcoal to balance yellow)
