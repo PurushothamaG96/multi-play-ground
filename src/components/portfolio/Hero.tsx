@@ -13,7 +13,7 @@ export default function Hero({ title, subtitle, image, heroSub }: any) {
       <Container
         sx={{
           display: "flex",
-          flexDirection: { xs: "column", md: "row" }, // stack on mobile
+          flexDirection: { xs: "column-reverse", md: "row" }, // stack on mobile
           alignItems: "center",
           gap: { xs: 3, md: 4 },
           textAlign: { xs: "center", md: "left" }, // center text on mobile
@@ -54,7 +54,14 @@ export default function Hero({ title, subtitle, image, heroSub }: any) {
         </Box>
 
         {/* Image */}
-        <Box flex={1} sx={{ display: "flex", justifyContent: "center" }}>
+        <Box
+          flex={1}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            paddingTop: { xs: "1rem", md: "auto" },
+          }}
+        >
           <Image
             src={image}
             alt={title}
