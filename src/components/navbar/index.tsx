@@ -6,6 +6,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
+import Link from "next/link";
 
 export default function Navbar({ logo }: { logo: { url: string } }) {
   const [scrolled, setScrolled] = useState(false);
@@ -27,7 +28,7 @@ export default function Navbar({ logo }: { logo: { url: string } }) {
         position="fixed"
         elevation={scrolled ? 4 : 0}
         sx={{
-          backgroundColor: scrolled ? "primary.lighter" : "primary.main",
+          backgroundColor: scrolled ? "primary.lighter" : "primary.dark",
           color: scrolled ? "common.black" : "common.white",
           transition:
             "background-color 0.45s ease, color 0.45s ease, box-shadow 0.3s ease",
@@ -39,15 +40,50 @@ export default function Navbar({ logo }: { logo: { url: string } }) {
           </Box>
 
           <Box sx={{ display: "flex", gap: 10 }}>
-            <Typography variant="h5" sx={{ cursor: "pointer" }}>
-              Home
-            </Typography>
-            <Typography variant="h5" sx={{ cursor: "pointer" }}>
-              About
-            </Typography>
-            <Typography variant="h5" sx={{ cursor: "pointer" }}>
-              Contact
-            </Typography>
+            <Link href="/portfolio" style={{ textDecoration: "none" }} passHref>
+              <Typography
+                variant="h5"
+                sx={{
+                  cursor: "pointer",
+                  textDecoration: "none",
+                  color: scrolled ? "common.black" : "common.white",
+                }}
+              >
+                Home
+              </Typography>
+            </Link>
+            <Link
+              href="/portfolio/about"
+              style={{ textDecoration: "none", color: "white" }}
+              passHref
+            >
+              <Typography
+                variant="h5"
+                sx={{
+                  cursor: "pointer",
+                  textDecoration: "none",
+                  color: scrolled ? "common.black" : "common.white",
+                }}
+              >
+                About
+              </Typography>
+            </Link>
+            <Link
+              href="/portfolio/contact"
+              style={{ textDecoration: "none", color: "white" }}
+              passHref
+            >
+              <Typography
+                variant="h5"
+                sx={{
+                  cursor: "pointer",
+                  textDecoration: "none",
+                  color: scrolled ? "common.black" : "common.white",
+                }}
+              >
+                Contact
+              </Typography>
+            </Link>
           </Box>
           <Box>
             <Button variant="contained" sx={{ backgroundColor: "info.main" }}>
