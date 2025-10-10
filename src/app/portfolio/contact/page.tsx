@@ -1,7 +1,9 @@
 "use client";
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
+
+const SOCIAL_MEDIA = ["Linkdin", "GitHub", "LeetCode"];
 
 export default function Contact() {
   const initialValue = {
@@ -53,10 +55,30 @@ export default function Contact() {
           case studies and resume.
         </Typography>
         <Typography>You can also find me on the following channels</Typography>
-        <Box>{/* social media icons */}</Box>
+        <Box
+          marginTop={2}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          gap={2}
+        >
+          {SOCIAL_MEDIA.map((links) => (
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              width={70}
+              height={70}
+              sx={{ boxShadow: 5, borderRadius: 2 }}
+            >
+              {links}
+            </Box>
+          ))}
+        </Box>
       </Box>
 
       <Box
+        bgcolor="primary.light"
         sx={{
           boxShadow: { xs: 5, md: 10 },
           margin: { xs: 5, md: 10 },
@@ -75,7 +97,7 @@ export default function Contact() {
                 <Box
                   display="flex"
                   gap={2}
-                  alignItems={{ xs: "column", md: "row" }}
+                  alignItems={{ xs: "col", md: "row" }}
                 >
                   <Field
                     as={TextField}
@@ -119,23 +141,27 @@ export default function Contact() {
                     as={TextField}
                     name="message"
                     label="Message"
-                    type="message"
                     multiline
-                    rows={4} // initial height of textarea
+                    rows={4}
                     fullWidth
                     margin="normal"
                     required
                     helperText={<ErrorMessage name="message" />}
                     error={touched.message && Boolean(errors.message)}
                     sx={{
+                      color: "primary.contrastText",
                       "& .MuiOutlinedInput-root": {
+                        backgroundColor: "info.darker", // ensure input root background matches
                         "& fieldset": {
-                          borderColor: "primary.main", // Custom border color
+                          borderColor: "primary.main",
                         },
                       },
                     }}
                   />
                 </Box>
+                <Button variant="contained" type="submit">
+                  Submit
+                </Button>
               </Form>
             )}
           </Formik>
